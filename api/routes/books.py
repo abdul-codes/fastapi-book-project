@@ -53,7 +53,7 @@ async def get_book_by_id(book_id: int):
     if book:
         return JSONResponse(status_code=status.HTTP_200_OK, content=book.model_dump())
 
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Book with Id {book_id} not found")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Book not found")
 
 
 @router.put("/{book_id}", response_model=Book, status_code=status.HTTP_200_OK)
