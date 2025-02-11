@@ -24,4 +24,4 @@ jobs:
           pip install -r requirements.txt  # Ensure your dependencies are installed
 
       - name: Run Tests
-        run: pytest --disable-warnings  # Run pytest and fail if tests don't pass
+        run: pytest --disable-warnings  
