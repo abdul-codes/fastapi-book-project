@@ -1,8 +1,11 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 from api.router import api_router
 from core.config import settings
+
 
 app = FastAPI()
 
@@ -21,3 +24,9 @@ app.include_router(api_router, prefix=settings.API_PREFIX)
 async def health_check():
     """Checks if server is active."""
     return {"status": "active"}
+
+
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=10000)
