@@ -50,10 +50,9 @@ async def get_books() -> OrderedDict[int, Book]:
 @router.get("/{book_id}", response_model=Book)
 async def get_book_by_id(book_id: int):
     book = db.books.get(book_id)
-    if book:
-        return JSONResponse(status_code=status.HTTP_200_OK, content=book.model_dump())
-
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Book not found")
+    if not book:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+    return book  
 
 
 @router.put("/{book_id}", response_model=Book, status_code=status.HTTP_200_OK)
@@ -65,6 +64,8 @@ async def update_book(book_id: int, book: Book) -> Book:
 
 
 @router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_book(book_id: int) -> None:
+async def delete_book(book_id: int):
+    if book_id not in db.books:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     db.delete_book(book_id)
-    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content=None)
+    return None  
