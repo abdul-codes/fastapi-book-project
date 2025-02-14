@@ -55,7 +55,6 @@ async def get_book_by_id(book_id: int):
 
 
 
->>>>>>> d8baa717d7d356bb0b4c096fc201db19984b233
 @router.put("/{book_id}", response_model=Book, status_code=status.HTTP_200_OK)
 async def update_book(book_id: int, book: Book) -> Book:
     return JSONResponse(
