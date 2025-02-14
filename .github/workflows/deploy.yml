@@ -6,6 +6,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
@@ -16,3 +19,4 @@ jobs:
             cd /fastapi/fastapi-book-project
             git pull origin main
             sudo systemctl restart fastapi
+            sudo systemctl restart nginx
