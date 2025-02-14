@@ -1,6 +1,6 @@
 from typing import OrderedDict
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, HTTPException
 from fastapi.responses import JSONResponse
 
 from api.db.schemas import Book, Genre, InMemoryDB
@@ -40,6 +40,9 @@ async def create_book(book: Book):
         status_code=status.HTTP_201_CREATED, content=book.model_dump()
     )
 
+@router.get("/stage2")
+async def stage2_check():
+    return {"status": "Stage 2 endpoint is working!"}
 
 @router.get(
     "/", response_model=OrderedDict[int, Book], status_code=status.HTTP_200_OK
@@ -50,10 +53,19 @@ async def get_books() -> OrderedDict[int, Book]:
 @router.get("/{book_id}", response_model=Book)
 async def get_book_by_id(book_id: int):
     book = db.books.get(book_id)
+<<<<<<< HEAD
     if book:
         return JSONResponse(status_code=status.HTTP_200_OK, content=book.model_dump())
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Book not found")
+=======
+    if not book:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+    return book  
+
+
+
+>>>>>>> d8baa717d7d356bb0b4c096fc201db19984b2337
 
 @router.put("/{book_id}", response_model=Book, status_code=status.HTTP_200_OK)
 async def update_book(book_id: int, book: Book) -> Book:
@@ -64,6 +76,8 @@ async def update_book(book_id: int, book: Book) -> Book:
 
 
 @router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_book(book_id: int) -> None:
+async def delete_book(book_id: int):
+    if book_id not in db.books:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     db.delete_book(book_id)
-    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content=None)
+    return None   
