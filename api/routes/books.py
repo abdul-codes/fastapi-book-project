@@ -40,10 +40,6 @@ async def create_book(book: Book):
         status_code=status.HTTP_201_CREATED, content=book.model_dump()
     )
 
-@router.get("/stage2")
-async def stage2_check():
-    return {"status": "Stage 2 endpoint is working!"}
-
 @router.get(
     "/", response_model=OrderedDict[int, Book], status_code=status.HTTP_200_OK
 )
