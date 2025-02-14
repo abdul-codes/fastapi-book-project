@@ -40,6 +40,9 @@ async def create_book(book: Book):
         status_code=status.HTTP_201_CREATED, content=book.model_dump()
     )
 
+@router.get("/stage2")
+async def stage2_check():
+    return {"status": "Stage 2 endpoint is working!"}
 
 @router.get(
     "/", response_model=OrderedDict[int, Book], status_code=status.HTTP_200_OK
@@ -55,6 +58,8 @@ async def get_book_by_id(book_id: int):
     return book  
 
 
+
+
 @router.put("/{book_id}", response_model=Book, status_code=status.HTTP_200_OK)
 async def update_book(book_id: int, book: Book) -> Book:
     return JSONResponse(
@@ -68,4 +73,4 @@ async def delete_book(book_id: int):
     if book_id not in db.books:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     db.delete_book(book_id)
-    return None  
+    return None   
